@@ -1,0 +1,5 @@
+# CUSTOM STUFF
+.idea/*
+
+# PYTHON
+*.pyc
