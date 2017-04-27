@@ -11,15 +11,19 @@
 
     <!--<link rel="shortcut icon" href="static/assets/img/aoe2_logo.png">-->
 
+    <link rel="stylesheet" type="text/css" href="static/app/app.css">
+    <link rel="stylesheet" type="text/css" href="static/app/world/world.styles.css">
+
     <script src="static/assets/libs/angular.min.js"></script>
     <script src="static/assets/libs/angular-route.min.js"></script>
     <script src="static/assets/libs/fabric.min.js"></script>
+    <script src="static/assets/libs/jquery.min.js"></script>
     <script src="static/app/app.js"></script>
-    <script src="static/app/world.controller.js"></script>
+    <script src="static/app/world/world.controller.js"></script>
 </head>
 <body>
     {% raw %}
-    <div class="container-fluid" ng-view></div>
+    <div data-ng-include data-src="'static/app/world/world.view.html'"></div>
     {% endraw %}
 </body>
 </html>
