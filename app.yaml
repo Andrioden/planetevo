@@ -12,6 +12,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /api/specie/.*
+  script: api.specie.app
+
 - url: /.*
   script: main.app
 

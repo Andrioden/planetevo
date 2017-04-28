@@ -1,0 +1,24 @@
+<div id="menuView" ng-controller="MenuController as menuController">
+
+    <div id="leftMenu">
+        <md-toolbar md-scroll-shrink>
+            <div class="md-toolbar-tools">Menu</div>
+        </md-toolbar>
+
+        <md-content>
+            <section>
+                <md-subheader class="md-primary">Impact the world</md-subheader>
+                <md-button class="md-raised md-primary" ng-click="showCreateSpecieDialog($event)">Create Specie</md-button>
+                <md-subheader class="md-primary">Species</md-subheader>
+                <md-list flex class="md-dense">
+                    <md-list-item ng-repeat="specie in species" ng-click="clickedSpecie(specie)">
+                        <span>{{ specie.name }}</span>
+                    </md-list-item>
+                </md-list>
+            </section>
+
+        </md-content>
+
+    </div>
+
+</div>

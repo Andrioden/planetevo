@@ -1,6 +1,10 @@
-app.controller('WorldController', function($rootScope, $scope, $window){
+app.controller('WorldController', function($rootScope, $scope, $window, Restangular){
 
     // CONSTRUCTOR
+
+    $rootScope.species = Restangular.all("specie").getList().$object;
+    console.log($rootScope.species);
+
     var canvas = new fabric.Canvas('worldCanvas');
     canvas.setBackgroundColor('blue', canvas.renderAll.bind(canvas));
     canvas.setDimensions({ width: 200, height: 200})
