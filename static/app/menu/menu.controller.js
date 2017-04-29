@@ -52,19 +52,6 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
                     $scope.submitting = false;
                 }
             );
-
-//            Specie.save($scope.specie).$promise.then(
-//                function (response) { //success
-//                    $scope.submitting = false;
-//                    console.log(response)
-//                    $rootScope.species.push(response);
-//                    $mdDialog.hide(response.data);
-//                },
-//                function (error) { //error
-//                    requestFailed(error);
-//                    $scope.submitting = false;
-//                }
-//            );
         };
     }
 

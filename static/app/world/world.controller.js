@@ -3,7 +3,6 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
     // CONSTRUCTOR
 
     $rootScope.species = Restangular.all("specie").getList().$object;
-    console.log($rootScope.species);
 
     var canvas = new fabric.Canvas('worldCanvas');
     canvas.setBackgroundColor('blue', canvas.renderAll.bind(canvas));
