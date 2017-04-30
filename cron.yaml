@@ -1,0 +1,5 @@
+cron:
+- description: World Process
+  url: /cron/tick
+  target: beta
+  schedule: every 1 minutes

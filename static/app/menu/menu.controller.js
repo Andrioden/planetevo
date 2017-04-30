@@ -43,12 +43,11 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
             Restangular.all("specie").post($scope.specie).then(
                 function (response) { //success
                     $scope.submitting = false;
-                    console.log(response.specie);
-                    $rootScope.species.push(response.specie);
+                    console.log(response.plain());
+                    $rootScope.species.push(response.plain());
                     $mdDialog.hide();
                 },
                 function errorCallback() { //error
-                    requestFailed(error);
                     $scope.submitting = false;
                 }
             );
