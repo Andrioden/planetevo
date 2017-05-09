@@ -1,10 +1,10 @@
-app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restangular){
+app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restangular, $http){
 
     // CONSTRUCTOR
 
     $scope.showCreateSpecieDialog = function(ev) {
         $mdDialog.show({
-            controller: CreateSpecieDialogController,
+            controller: createSpecieDialogController,
             templateUrl: 'static/app/menu/createSpecieDialog.template.html',
             parent: angular.element(document.body),
             targetEvent: ev,
@@ -22,10 +22,21 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
         console.log("Clicked " + specie.name);
     }
 
+    $scope.tick = function() {
+        $http.get('/cron/tick', {}).then(
+            function() { //success
+                console.log("lol");
+                $rootScope.$emit('species-load');
+            },
+            function() { //error
+            }
+        );
+    }
+
 
     // PRIVATE FUNCTIONS
 
-    function CreateSpecieDialogController($scope, $mdDialog) {
+    function createSpecieDialogController($scope, $mdDialog) {
 
         $scope.specie = {
             name: ""

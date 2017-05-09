@@ -20,6 +20,8 @@ class Specie(ndb.Model):
     locations = ndb.JsonProperty()
 
     def set_locations(self, locations):
+        self.population = 0
+
         for location in locations:
             if not utils.has_dict_values(location, ["x", "y", "a"]):
                 raise ValueError("Missing required value in dict: " + location)

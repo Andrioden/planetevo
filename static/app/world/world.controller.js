@@ -1,5 +1,12 @@
 app.controller('WorldController', function($rootScope, $scope, $window, Restangular){
 
+    // EVENTS
+
+    $rootScope.$on('species-load', function(event, args) {
+        loadSpecies();
+    });
+
+
     // CONSTRUCTOR
     var worldConfig = {
         width: 100,
@@ -8,16 +15,10 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
     };
 
     $rootScope.species = [];
+    loadSpecies();
 
     var canvas = new fabric.Canvas('worldCanvas');
-    canvas.setBackgroundColor('blue', canvas.renderAll.bind(canvas));
     canvas.setDimensions({ width: worldConfig.width * worldConfig.factor, height: worldConfig.height * worldConfig.factor });
-
-//    canvas.on('mouse:down', function(options) {
-//        if (options.target) {
-//            console.log('an object was clicked! ', options.target.specie);
-//        }
-//    });
 
     setDimensionsAccordingToWindowSize();
 
@@ -27,40 +28,31 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
         });
     });
 
-    Restangular.all("specie").getList().then(
-        function (response) { //success
-            $rootScope.species = response.plain();
-            drawSpecies($rootScope.species);
-        },
-        function errorCallback() { //error
-        }
-    );
-
 
     // EXPOSED ACTIONS FOR HTML
 
     // PRIVATE FUNCTIONS
 
+    function loadSpecies() {
+        Restangular.all("specie").getList().then(
+            function (response) { //success
+                $rootScope.species = response.plain();
+                drawSpecies($rootScope.species);
+            },
+            function errorCallback() { //error
+            }
+        );
+    }
+
     function setDimensionsAccordingToWindowSize() {
         canvas.setDimensions({ width: $window.innerWidth, height: $window.innerHeight})
     }
 
-//    function drawBorder() {
-//        var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
-//        path.set({ left: 120, top: 120 });
-//        canvas.add(path);
-//
-////        canvas.add(new fabric.Rect({
-////            left: 0,
-////            top: 0,
-////            fill: 'blue',
-////            width: worldConfig.width * worldConfig.factor,
-////            height: worldConfig.height * worldConfig.factor,
-////        }));
-//    }
-
-
     function drawSpecies(species) {
+        canvas.clear();
+
+        canvas.setBackgroundColor('blue', canvas.renderAll.bind(canvas));
+
         for (var s = 0; s < species.length; s++) {
             var specie = species[s];
             console.log(specie);
@@ -70,12 +62,15 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
                     left: specie.locations[i].x * worldConfig.factor,
                     top: (worldConfig.height - specie.locations[i].y) * worldConfig.factor,
                     fill: 'red',
+                    opacity: specie.locations[i].a / 100,
                     width: worldConfig.factor,
                     height: worldConfig.factor,
                     selectable: false,
                 }));
             }
         }
+
+        console.log("Canvas now has object count: " + canvas.getObjects().length);
     }
 
 });
