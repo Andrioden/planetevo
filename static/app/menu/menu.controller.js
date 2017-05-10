@@ -41,7 +41,6 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
     $scope.tick = function() {
         $http.get('/cron/tick', {}).then(
             function() { //success
-                console.log("lol");
                 $rootScope.$emit('species-load');
             },
             function() { //error

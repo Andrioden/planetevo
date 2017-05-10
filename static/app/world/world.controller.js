@@ -25,7 +25,10 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
     $rootScope.species = [];
     loadSpecies();
 
-    canvas = new fabric.Canvas('worldCanvas'); // Unscoped for testing
+    // Unscoped for testing
+    canvas = new fabric.Canvas('worldCanvas', {
+        selection: false
+    });
     canvas.setDimensions({ width: worldConfig.width * worldConfig.factor, height: worldConfig.height * worldConfig.factor });
 
     setDimensionsAccordingToWindowSize();
@@ -36,6 +39,17 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
         });
     });
 
+    var worldTransformHelper = new WorldTransformHelper();
+
+    canvas.on('mouse:down', function(options) {
+        worldTransformHelper.startMouseDrag(options.e.clientX, options.e.clientY);
+    });
+    canvas.on('mouse:up', function(options) {
+        worldTransformHelper.stopMouseDrag(options.e.clientX, options.e.clientY);
+    });
+    document.addEventListener("wheel", function (e) {
+        worldTransformHelper.zoom(e.deltaY);
+    }, true);
 
     // EXPOSED ACTIONS FOR HTML
 
@@ -63,9 +77,9 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
 
         for (var s = 0; s < species.length; s++) {
             var specie = species[s];
-            console.log(specie);
+//            console.log(specie);
             for (var i = 0; i < specie.locations.length; i++) {
-                console.log(specie.locations[i])
+//                console.log(specie.locations[i])
                 canvas.add(new fabric.Rect({
                     left: x(specie.locations[i].x),
                     top: y(specie.locations[i].y),
@@ -134,6 +148,33 @@ app.controller('WorldController', function($rootScope, $scope, $window, Restangu
 
     function y(serverInvertedY) {
         return (worldConfig.height - serverInvertedY) * worldConfig.factor;
+    }
+
+    function WorldTransformHelper() {
+        var startX;
+        var startY;
+
+        this.startMouseDrag = function(x, y) {
+            startX = x;
+            startY = y;
+        }
+        this.stopMouseDrag = function(x, y) {
+            var offsetX = x - startX;
+            var offsetY = y - startY;
+
+            var viewportTransform = canvas.viewportTransform;
+            viewportTransform[4] += offsetX;
+            viewportTransform[5] += offsetY;
+            canvas.setViewportTransform(viewportTransform);
+        }
+        this.zoom = function(deltaY) {
+            var zoomFactor = 1 - (deltaY / 1000);
+            
+            var viewportTransform = canvas.viewportTransform;
+            viewportTransform[0] *= zoomFactor;
+            viewportTransform[3] *= zoomFactor;
+            canvas.setViewportTransform(viewportTransform);
+        }
     }
 
 });
