@@ -13,7 +13,7 @@
                 <md-button class="md-raised md-primary" ng-click="showCreateSpecieDialog($event)">Create Specie</md-button>
                 <md-subheader class="md-primary">Species</md-subheader>
                 <md-list flex class="md-dense">
-                    <md-list-item ng-repeat="specie in species" ng-click="clickedSpecie(specie)">
+                    <md-list-item ng-repeat="specie in species" ng-click="clickedSpecie($event, specie)">
                         <span>{{specie.name}} ({{specie.population}})</span>
                     </md-list-item>
                 </md-list>

@@ -8,7 +8,7 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
             templateUrl: 'static/app/menu/createSpecieDialog.template.html',
             parent: angular.element(document.body),
             targetEvent: ev,
-            clickOutsideToClose:true,
+            clickOutsideToClose: true,
             fullscreen: false // Only for -xs, -sm breakpoints.
         })
         .then(function() {
@@ -18,8 +18,24 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
         });
     };
 
-    $scope.clickedSpecie = function(specie) {
-        console.log("Clicked " + specie.name);
+    $scope.clickedSpecie = function(ev, specie) {
+        $rootScope.$emit('species-highlight-show', specie);
+
+        $mdDialog.show({
+            controller: specieDialogController,
+            templateUrl: 'static/app/menu/specieDialog.template.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            fullscreen: false, // Only for -xs, -sm breakpoints.
+            locals: { specie: specie },
+        })
+        .then(function() {
+            // Return from dialog
+        }, function() {
+            // Closed dialog
+            $rootScope.$emit('species-highlight-remove', specie);
+        });
     }
 
     $scope.tick = function() {
@@ -63,6 +79,17 @@ app.controller('MenuController', function($rootScope, $scope, $mdDialog, Restang
                 }
             );
         };
+
+    }
+
+    function specieDialogController($scope, $mdDialog, specie) {
+
+        $scope.specie = specie;
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
     }
 
 });
